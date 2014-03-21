@@ -20,6 +20,15 @@ class Librarian
     end
   end
 
+  def self.history
+    your_books = []
+    results = DB.exec("SELECT * FROM history;")
+    results.each do |book|
+      your_books << [book['titleid'], book['nameid'], book['date']]
+    end
+    your_books
+  end
+
   def self.update_author(old_author, new_author)
     if new_author == ''
       DB.exec("DELETE FROM authors WHERE name = '#{old_author}';")
@@ -47,8 +56,7 @@ class Librarian
     results = DB.exec("SELECT * FROM authors;")
     authors = []
     results.each do |result|
-      author = result['name']
-      authors << author
+      authors << result['name']
     end
     authors
   end
@@ -57,8 +65,7 @@ class Librarian
     results = DB.exec("SELECT * FROM books;")
     books = []
     results.each do |result|
-      book = result['title']
-      books << book
+      books << result['title']
     end
     books
   end
@@ -70,7 +77,6 @@ class Librarian
     results.each do |result|
       title = result['titleid']
       author = result['authorid']
-
       counter = 0
       books.each do |cat|
         if cat[0] == title
@@ -85,13 +91,4 @@ class Librarian
     end
     books
   end
-
-
-  # def self.method(book, *author)
-  #   puts book
-  #   puts author
-  # end
-
 end
-
-# Librarian.method('name_ofbook', 'author1', 'author2')
